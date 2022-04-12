@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  Copyright (c) 2015, 2019, Gluon and/or its affiliates.
+  All rights reserved. Use is subject to license terms.
+
+  This file is available and licensed under the following license:
+
+  Redistribution and use in source and binary forms, with or without
+  modification, are permitted provided that the following conditions
+  are met:
+
+  - Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+  - Redistributions in binary form must reproduce the above copyright
+    notice, this list of conditions and the following disclaimer in
+    the documentation and/or other materials provided with the distribution.
+  - Neither the name of Oracle Corporation nor the names of its
+    contributors may be used to endorse or promote products derived
+    from this software without specific prior written permission.
+
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+
+<?import javafx.geometry.Insets?>
+<?import javafx.geometry.Rectangle2D?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.playeroriginal.PlayerOriginalController">
+  <children>
+      <StackPane>
+      <Label fx:id="username" text="Label" StackPane.alignment="CENTER_RIGHT">
+      <StackPane.margin>
+          <Insets right="10.0" />
+      </StackPane.margin>
+      </Label>
+    <MenuBar id="menuBar" accessibleRole="IMAGE_VIEW" VBox.vgrow="NEVER">
+      <menus>
+        <Menu id="menu_file" mnemonicParsing="false" text="File">
+          <items>
+            <MenuItem id="menuItem_open" fx:id="menuItemOpen" mnemonicParsing="false" onAction="#actionOpen" text="Open..." />
+            <Menu id="menuItem_openRecent" fx:id="menuOpenRecent" mnemonicParsing="false" text="Open Recent" />
+            <SeparatorMenuItem mnemonicParsing="false" />
+            <MenuItem id="menuItem_fileManagesment" fx:id="menuItemfileManagement" mnemonicParsing="false" onAction="#actionManage" text="File management" />
+            <SeparatorMenuItem mnemonicParsing="false" />
+            <MenuItem id="menuItem_quit" fx:id="menuItem_quit" mnemonicParsing="false" onAction="#actionQuit" text="Quit" />
+          </items>
+        </Menu>
+        <Menu id="menu_play" mnemonicParsing="false" text="Play">
+          <items>
+                  <MenuItem id="menuItem_playList" fx:id="menuItemPlayList" mnemonicParsing="false" onAction="#actionPlayList" text="Play List" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+            <MenuItem id="menuItem_start" fx:id="menuItemStart" mnemonicParsing="false" onAction="#actionStart" text="Start" />
+            <MenuItem id="menuItem_stop" fx:id="menuItemStop" mnemonicParsing="false" onAction="#actionStop" text="Stop" />
+            <MenuItem id="menuItem_skipPre" fx:id="menuItemSkipPre" disable="true" mnemonicParsing="false" onAction="#actionSkipPre" text="Skip Previous" />
+            <MenuItem id="menuItem_skipNext" fx:id="menuItemSkipNext" disable="true" mnemonicParsing="false" onAction="#actionSkipNext" text="Skip Next" />
+          </items>
+        </Menu>
+        <Menu id="menu_audio" mnemonicParsing="false" text="Audio">
+          <items>
+            <MenuItem id="menuItem_volumeUp" fx:id="menuItemVolumeUp" mnemonicParsing="false" onAction="#actionVolumeUp" text="Volume Up" />
+                  <MenuItem id="menuItem_volumeDown" fx:id="menuItemVolumeDown" mnemonicParsing="false" onAction="#actionVolumeDown" text="Volume Down" />
+                  <MenuItem id="menuItem_mute" fx:id="menuItemMute" mnemonicParsing="false" onAction="#actionMute" text="Mute" />
+          </items>
+        </Menu>
+            <Menu id="menu_setting" mnemonicParsing="false" text="Setting">
+              <items>
+                <MenuItem id="menuItem_preferences" fx:id="menuItemPreferences" mnemonicParsing="false" onAction="#actionPreferences" text="Preferences" />
+                  <MenuItem id="menuItem_account" fx:id="menuItemAccount" mnemonicParsing="false" onAction="#actionAccount" text="Account" />
+              </items>
+            </Menu>
+            <Menu id="menu_help" mnemonicParsing="false" text="Help">
+              <items>
+                <MenuItem id="menuItem_playerHelp" fx:id="menuItemPlayerHelp" mnemonicParsing="false" onAction="#actionPlayerHelp" text="Player Help" />
+                  <MenuItem id="menuItem_aboutPlayer" fx:id="menuItemAbout" mnemonicParsing="false" onAction="#actionAbout" text="About Player" />
+              </items>
+            </Menu>
+      </menus>
+    </MenuBar>
+      </StackPane>
+    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
+      <children>
+        <Label alignment="CENTER" layoutX="282.0" layoutY="164.0" style="&#10;" text="Drag components from Library here…" textAlignment="CENTER" textFill="#9f9f9f" wrapText="false">
+          <font>
+            <Font size="18.0" />
+          </font>
+        </Label>
+            <AnchorPane layoutY="313.0" prefHeight="60.0" prefWidth="800.0">
+               <children>
+                  <ImageView id="bt_volume" fitHeight="23.0" fitWidth="20.0" layoutX="14.0" layoutY="19.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="20.0">
+                     <image>
+                        <Image url="@../../../icon/volumeOn.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView id="bt_play" fx:id="btPlay" fitHeight="33.0" fitWidth="26.0" layoutX="387.0" layoutY="23.0" onMouseClicked="#actionPlay" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="4.0" AnchorPane.leftAnchor="387.0" AnchorPane.rightAnchor="387.0714282989502">
+                     <image>
+                        <Image url="@../../../icon/play.png" />
+                     </image>
+                     <viewport>
+                        <Rectangle2D />
+                     </viewport>
+                  </ImageView>
+                  <ImageView id="bt_skipNext" fitHeight="23.0" fitWidth="20.0" layoutX="449.0" layoutY="30.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="331.0">
+                     <image>
+                        <Image url="@../../../icon/skipNext.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView id="bt_skipPrevious" fitHeight="23.0" fitWidth="20.0" layoutX="336.0" layoutY="30.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="331.0">
+                     <image>
+                        <Image url="@../../../icon/skipPrevious.png" />
+                     </image>
+                  </ImageView>
+                  <ProgressBar id="timeBar" fx:id="timeBar" layoutX="96.0" layoutY="3.0" prefHeight="11.0" prefWidth="607.0" progress="0.0" />
+                  <Label id="timeNow" fx:id="timeNow" layoutX="47.0" text="Label" AnchorPane.leftAnchor="45.0" AnchorPane.topAnchor="0.0" />
+                  <Label id="timeSave" fx:id="timeSave" layoutX="725.0" text="Label" AnchorPane.rightAnchor="45.0" AnchorPane.topAnchor="0.0" />
+               </children>
+            </AnchorPane>
+      </children>
+    </AnchorPane>
+  </children>
+</VBox>
