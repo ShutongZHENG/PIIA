@@ -15,6 +15,8 @@ public class PlayerOriginal extends Application {
         stage.setTitle("Player Original");
         stage.setScene(scene);
         stage.show();
+
+
     }
 
     public static void main(String[] args) {
