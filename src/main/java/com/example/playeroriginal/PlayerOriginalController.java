@@ -4,17 +4,24 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.example.playeroriginal.jsonData.Video;
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.DoubleProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.stage.FileChooser;
@@ -23,13 +30,15 @@ import javafx.scene.media.Media;
 
 
 import java.io.*;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
-public class PlayerOriginalController {
+public class PlayerOriginalController implements Initializable {
     private static String pathPlayList = "src/main/java/com/example/playeroriginal/jsonData/playlist.json";
     private static String pathUsers = "src/main/java/com/example/playeroriginal/jsonData/users.json";
     private static ObservableList<VideoSimpleStringProperty> videos;
@@ -37,7 +46,8 @@ public class PlayerOriginalController {
     private static boolean isPlaying = false;
     private static Media mediaPlaying;
     private static MediaPlayer mediaPlayer;
-    private static MediaView mediaView;
+    //private static MediaView mediaView;
+
     @FXML
     private Label timeNow;
     @FXML
@@ -48,9 +58,10 @@ public class PlayerOriginalController {
     private MenuItem menuItem_quit;
     @FXML
     private MenuItem menuItem_open;
-
     @FXML
     private ImageView btPlay;
+    @FXML
+    private MediaView mediaView;
     @FXML
     private Slider volume_slider;
     @FXML
@@ -64,21 +75,25 @@ public class PlayerOriginalController {
     @FXML
     private TableView<VideoSimpleStringProperty> tableView;
     @FXML
-    private AnchorPane centreView;
+    private VBox centreView;
 
     public int i = -1, j = -1;
     public double volume;
 
 
-    public void initialize() {
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
         timeNow.setText("-:-");
         timeSave.setText("-:-");
         username.setText("aaaabbbbcccc");
         videos = FXCollections.observableArrayList();
         loadPlayList();
-
-
+        tableView.setVisible(true);
+        tableView.setDisable(false);
+        mediaView.setDisable(true);
+        mediaView.setVisible(false);
     }
+
 
     public void actionQuit(ActionEvent actionEvent) {
         Platform.exit();
@@ -326,19 +341,44 @@ public class PlayerOriginalController {
         // 若不能 则 isplaying =false； 能 isplaying  = true
         // isplaying 能用则可以使用 skip 和 pre
         if (isPlaying == false) {
-          try {
-              String videoFileURIStr = new File(getPathSelectedVideo()).toURI().toString();
-              mediaPlaying = new Media(videoFileURIStr);
-              mediaPlayer = new MediaPlayer(mediaPlaying);
-              mediaView = new MediaView(mediaPlayer);
-              mediaPlayer.setAutoPlay(true);
-              centreView.getChildren().clear() ;
-              centreView.getChildren().add(mediaView);
-              isPlaying = true;
-          }catch (Exception e ){
-              isPlaying = false;
-              System.out.println("Error: can't play this video");
-          }
+            try {
+
+                String videoFileURIStr = new File(getPathSelectedVideo()).toURI().toString();
+                mediaPlaying = new Media(videoFileURIStr);
+                mediaPlayer = new MediaPlayer(mediaPlaying);
+                mediaPlayer.setAutoPlay(true);
+                mediaView.setMediaPlayer(mediaPlayer);
+
+
+                DoubleProperty mvw = mediaView.fitWidthProperty();
+                DoubleProperty mvh = mediaView.fitHeightProperty();
+                mvw.bind(Bindings.selectDouble(mediaView.sceneProperty(), "width"));
+                mvh.bind(Bindings.selectDouble(mediaView.sceneProperty(), "height"));
+                mediaView.setPreserveRatio(true);
+                Stage stage = (Stage)mediaView.getScene().getWindow();
+                    System.out.println("W: "+stage.getWidth() +"   H:"+stage.getHeight());
+                    stage.setHeight(stage.getHeight()+100);
+            //    setScene(new Scene(new Group(mediaView), size.getWidth(), size.getHeight()));
+
+
+
+//                paneView.getChildren().clear();
+//                paneView.getChildren().add(mediaView);
+
+//                mediaView.fitHeightProperty().bind(paneView.heightProperty());
+//                mediaView.fitWidthProperty().bind(paneView.widthProperty());
+//                mediaView.setX((paneView.getWidth() - mediaView.getFitWidth())/2);
+//                System.out.println("paneW: "+paneView.getWidth() +"mediaW: "+mediaView.getFitWidth());
+//                mediaView.setY((paneView.getHeight() - mediaView.getFitHeight())/2);
+                isPlaying = true;
+                tableView.setVisible(false);
+                tableView.setDisable(true);
+                mediaView.setDisable(false);
+                mediaView.setVisible(true);
+            } catch (Exception e) {
+                isPlaying = false;
+                System.out.println("Error: can't play this video");
+            }
 
         }
 
@@ -379,4 +419,5 @@ public class PlayerOriginalController {
         }
         return res;
     }
+
 }

@@ -48,47 +48,46 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.media.MediaView?>
 
+<BorderPane fx:id="rootLayout" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.playeroriginal.PlayerOriginalController">
+    <center>
+        <Pane fx:id="paneView" BorderPane.alignment="CENTER">
+            <children> 
+                <TableView fx:id="tableView" disable="true" prefHeight="363.0" prefWidth="801.0">
+                    <columns>
+                        <TableColumn fx:id="tableView_name" prefWidth="315.0" resizable="false" text="Name">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="name" />
+                            </cellValueFactory>
+                        </TableColumn>
+                        <TableColumn fx:id="tableView_duration" minWidth="0.0" prefWidth="175.0" resizable="false" text="Duration">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="duration" />
+                            </cellValueFactory>
+                        </TableColumn>
 
-<BorderPane xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.playeroriginal.PlayerOriginalController">
-   <center>
-      <VBox>
-          <children>
-              <AnchorPane fx:id="centreView" maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
-                  <children>
-                        <TableView fx:id="tableView" layoutX="11.0" prefHeight="284.0" prefWidth="775.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="11.0" AnchorPane.topAnchor="1.0">
-                            <columns>
-                                <TableColumn fx:id="tableView_name" prefWidth="315.0" resizable="false" text="Name">
-                                    <cellValueFactory>
-                                        <PropertyValueFactory property="name" />
-                                    </cellValueFactory>
-                                </TableColumn>
-                                <TableColumn fx:id="tableView_duration" minWidth="0.0" prefWidth="175.0" resizable="false" text="Duration">
-                                    <cellValueFactory>
-                                        <PropertyValueFactory property="duration" />
-                                    </cellValueFactory>
-                                </TableColumn>
-
-                                      <TableColumn fx:id="tableView_type" prefWidth="116.0" resizable="false" text="Type">
-                                    <cellValueFactory>
-                                        <PropertyValueFactory property="type" />
-                                    </cellValueFactory>
-                                </TableColumn>
-                                <TableColumn fx:id="tableView_permission" prefWidth="171.0" resizable="false" text="Permission">
-                                    <cellValueFactory>
-                                        <PropertyValueFactory property="permission" />
-                                    </cellValueFactory>
-                                </TableColumn>
-                            </columns>
-                        </TableView>
-                  </children>
-              </AnchorPane>
-          </children>
-      </VBox>
-   </center>
-   <top>
+                                                <TableColumn fx:id="tableView_type" prefWidth="136.0" resizable="false" text="Type">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="type" />
+                            </cellValueFactory>
+                        </TableColumn>
+                        <TableColumn fx:id="tableView_permission" prefWidth="173.0" resizable="false" text="Permission">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="permission" />
+                            </cellValueFactory>
+                        </TableColumn>
+                    </columns>
+                </TableView>
+                <MediaView fx:id="mediaView" fitHeight="200" fitWidth="200"/>
+            </children>
+        </Pane>
+    </center>
+    <top>
         <StackPane BorderPane.alignment="CENTER">
             <MenuBar id="menuBar" accessibleRole="IMAGE_VIEW" VBox.vgrow="NEVER">
                 <menus>
@@ -145,38 +144,42 @@
                 </StackPane.margin>
             </Label>
         </StackPane>
-   </top>
-   <bottom>
-          <AnchorPane prefHeight="65.0" prefWidth="800.0" BorderPane.alignment="CENTER">
-              <children>
-                  <ImageView id="bt_volume" fitHeight="23.0" fitWidth="20.0" layoutX="20.0" layoutY="33.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="12.0" AnchorPane.topAnchor="33.0">
-                      <image>
-                          <Image url="@../../../icon/volumeOn.png" />
-                      </image>
-                  </ImageView>
-                  <ImageView id="bt_play" fx:id="btPlay" fitHeight="33.0" fitWidth="26.0" layoutX="387.0" layoutY="23.0" onMouseClicked="#actionPlay" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="4.0" AnchorPane.leftAnchor="386.9285717010498" AnchorPane.rightAnchor="387.0714282989502" AnchorPane.topAnchor="28.0">
-                      <image>
-                          <Image url="@../../../icon/play.png" />
-                      </image>
-                      <viewport>
-                          <Rectangle2D />
-                      </viewport>
-                  </ImageView>
-                  <ImageView id="bt_skipNext" fitHeight="23.0" fitWidth="20.0" layoutX="452.0" layoutY="35.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="10.0" AnchorPane.topAnchor="35.0">
-                      <image>
-                          <Image url="@../../../icon/skipNext.png" />
-                      </image>
-                  </ImageView>
-                  <ImageView id="bt_skipPrevious" fitHeight="23.0" fitWidth="20.0" layoutX="323.0" layoutY="35.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="10.0" AnchorPane.topAnchor="35.0">
-                      <image>
-                          <Image url="@../../../icon/skipPrevious.png" />
-                      </image>
-                  </ImageView>
-                  <ProgressBar id="timeBar" fx:id="timeBar" layoutX="96.0" layoutY="3.0" prefHeight="11.0" prefWidth="607.0" progress="0.0" AnchorPane.bottomAnchor="49.0" AnchorPane.topAnchor="5.0" />
-                  <Label id="timeNow" fx:id="timeNow" layoutX="47.0" text="Label" AnchorPane.bottomAnchor="48.0" AnchorPane.topAnchor="0.0" />
-                  <Label id="timeSave" fx:id="timeSave" layoutX="725.0" text="Label" />
-                  <Slider fx:id="volume_slider" layoutX="59.0" layoutY="35.0" value="50.0" AnchorPane.bottomAnchor="14.5" AnchorPane.topAnchor="35.0" />
-              </children>
-          </AnchorPane>
-   </bottom>
+    </top>
+    <bottom>
+        <HBox alignment="CENTER" BorderPane.alignment="BOTTOM_CENTER">
+            <children>
+                <AnchorPane prefHeight="49.0" prefWidth="800.0" snapToPixel="false">
+                    <children>
+                        <ImageView id="bt_volume" fitHeight="23.0" fitWidth="20.0" layoutX="20.0" layoutY="33.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="12.0" AnchorPane.topAnchor="33.0">
+                            <image>
+                                <Image url="@../../../icon/volumeOn.png" />
+                            </image>
+                        </ImageView>
+                        <ImageView id="bt_play" fx:id="btPlay" fitHeight="33.0" fitWidth="26.0" layoutX="387.0" layoutY="23.0" onMouseClicked="#actionPlay" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="4.0" AnchorPane.leftAnchor="386.9285717010498" AnchorPane.rightAnchor="387.0714282989502" AnchorPane.topAnchor="28.0">
+                            <image>
+                                <Image url="@../../../icon/play.png" />
+                            </image>
+                            <viewport>
+                                <Rectangle2D />
+                            </viewport>
+                        </ImageView>
+                        <ImageView id="bt_skipNext" fitHeight="23.0" fitWidth="20.0" layoutX="452.0" layoutY="35.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="10.0" AnchorPane.topAnchor="35.0">
+                            <image>
+                                <Image url="@../../../icon/skipNext.png" />
+                            </image>
+                        </ImageView>
+                        <ImageView id="bt_skipPrevious" fitHeight="23.0" fitWidth="20.0" layoutX="323.0" layoutY="35.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="10.0" AnchorPane.topAnchor="35.0">
+                            <image>
+                                <Image url="@../../../icon/skipPrevious.png" />
+                            </image>
+                        </ImageView>
+                        <ProgressBar id="timeBar" fx:id="timeBar" layoutX="96.0" layoutY="3.0" prefHeight="11.0" prefWidth="607.0" progress="0.0" AnchorPane.bottomAnchor="49.0" AnchorPane.topAnchor="5.0" />
+                        <Label id="timeNow" fx:id="timeNow" layoutX="47.0" text="Label" AnchorPane.bottomAnchor="48.0" AnchorPane.topAnchor="0.0" />
+                        <Label id="timeSave" fx:id="timeSave" layoutX="725.0" text="Label" />
+                        <Slider fx:id="volume_slider" layoutX="59.0" layoutY="35.0" value="50.0" AnchorPane.bottomAnchor="14.5" AnchorPane.topAnchor="35.0" />
+                    </children>
+                </AnchorPane>
+            </children>
+        </HBox>
+    </bottom>
 </BorderPane>
