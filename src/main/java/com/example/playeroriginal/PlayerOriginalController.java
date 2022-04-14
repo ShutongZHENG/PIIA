@@ -14,6 +14,9 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.scene.media.Media;
@@ -30,6 +33,11 @@ public class PlayerOriginalController {
     private static String pathPlayList = "src/main/java/com/example/playeroriginal/jsonData/playlist.json";
     private static String pathUsers = "src/main/java/com/example/playeroriginal/jsonData/users.json";
     private static ObservableList<VideoSimpleStringProperty> videos;
+    private static int selectedId = 0;
+    private static boolean isPlaying = false;
+    private static Media mediaPlaying;
+    private static MediaPlayer mediaPlayer;
+    private static MediaView mediaView;
     @FXML
     private Label timeNow;
     @FXML
@@ -55,6 +63,8 @@ public class PlayerOriginalController {
     private TableColumn<VideoSimpleStringProperty, String> tableView_permission;
     @FXML
     private TableView<VideoSimpleStringProperty> tableView;
+    @FXML
+    private AnchorPane centreView;
 
     public int i = -1, j = -1;
     public double volume;
@@ -100,15 +110,20 @@ public class PlayerOriginalController {
     }
 
     public void actionStart(ActionEvent actionEvent) {
+        playOrStop();
     }
 
     public void actionStop(ActionEvent actionEvent) {
     }
 
     public void actionSkipPre(ActionEvent actionEvent) {
+
+
     }
 
     public void actionSkipNext(ActionEvent actionEvent) {
+
+
     }
 
     public void actionVolumeUp(ActionEvent actionEvent) {
@@ -204,30 +219,10 @@ public class PlayerOriginalController {
         addVideoInJson(file);
 
 
-
     }
 
     public void actionPlay(MouseEvent mouseEvent) {
-        if (i == -1) {
-            Path imageFile = Paths.get("src/main/resources/icon/pause.png");
-            try {
-                btPlay.setImage(new Image(imageFile.toUri().toURL().toExternalForm()));
-                i = i * -1;
-            } catch (IOException e) {
-                System.out.println("Error: can't change image pause");
-            }
-
-        } else {
-            Path imageFile = Paths.get("src/main/resources/icon/play.png");
-            try {
-                btPlay.setImage(new Image(imageFile.toUri().toURL().toExternalForm()));
-                i = i * -1;
-            } catch (IOException e) {
-                System.out.println("Error: can't change image play");
-            }
-
-
-        }
+        playOrStop();
     }
 
 
@@ -238,7 +233,7 @@ public class PlayerOriginalController {
         //如果playlist没有 path 一样的path 执行
         boolean isNotExsitFile = true;
         for (Video v : playList) {
-            if (v.src.equals(file.getPath())){
+            if (v.src.equals(file.getPath())) {
                 isNotExsitFile = false;
             }
 
@@ -315,13 +310,73 @@ public class PlayerOriginalController {
     }
 
     private void loadPlayList() {
-            tableView.getItems().clear();
-            videos.clear();
+        tableView.getItems().clear();
+        videos.clear();
 
         for (Video v : getListVideoFromJson()) {
             videos.add(new VideoSimpleStringProperty(v.name, v.src, v.permission, v.type, v.duration));
         }
         tableView.getItems().addAll(videos);
 
+    }
+
+    private void playOrStop() {
+
+        // 判断是否能能读文件
+        // 若不能 则 isplaying =false； 能 isplaying  = true
+        // isplaying 能用则可以使用 skip 和 pre
+        if (isPlaying == false) {
+          try {
+              String videoFileURIStr = new File(getPathSelectedVideo()).toURI().toString();
+              mediaPlaying = new Media(videoFileURIStr);
+              mediaPlayer = new MediaPlayer(mediaPlaying);
+              mediaView = new MediaView(mediaPlayer);
+              mediaPlayer.setAutoPlay(true);
+              centreView.getChildren().clear() ;
+              centreView.getChildren().add(mediaView);
+              isPlaying = true;
+          }catch (Exception e ){
+              isPlaying = false;
+              System.out.println("Error: can't play this video");
+          }
+
+        }
+
+        if (i == -1) {
+            Path imageFile = Paths.get("src/main/resources/icon/pause.png");
+            try {
+                btPlay.setImage(new Image(imageFile.toUri().toURL().toExternalForm()));
+                i = i * -1;
+            } catch (IOException e) {
+                System.out.println("Error: can't change image pause");
+            }
+
+        } else {
+            Path imageFile = Paths.get("src/main/resources/icon/play.png");
+            try {
+                btPlay.setImage(new Image(imageFile.toUri().toURL().toExternalForm()));
+                i = i * -1;
+            } catch (IOException e) {
+                System.out.println("Error: can't change image play");
+            }
+
+
+        }
+    }
+
+    private String getPathSelectedVideo() {
+        String res;
+        try {
+            VideoSimpleStringProperty video = tableView.getSelectionModel().getSelectedItem();
+            selectedId = tableView.getSelectionModel().getSelectedIndex();
+            res = video.getSrc().toString();
+
+            System.out.println("ID: " + selectedId + "    Video name " + video.getName().toString());
+        } catch (Exception e) {
+            selectedId = 0;
+            res = videos.get(0).getSrc().toString();
+            System.out.println("Error: no selected video");
+        }
+        return res;
     }
 }
