@@ -13,6 +13,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -34,26 +35,27 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class PlayerOriginalController implements Initializable {
     private static String pathPlayList = "src/main/java/com/example/playeroriginal/jsonData/playlist.json";
-    private static String pathUsers = "src/main/java/com/example/playeroriginal/jsonData/users.json";
+    public static String pathUsers = "src/main/java/com/example/playeroriginal/jsonData/users.json";
     private static ObservableList<VideoSimpleStringProperty> videos;
     private static int selectedId = 0;
     private static boolean isPlaying = false;
     private static Media mediaPlaying;
     private static MediaPlayer mediaPlayer;
     //private static MediaView mediaView;
+    public static User user;
+    public static boolean loginSuccess;
+
 
     @FXML
     private Label timeNow;
     @FXML
     private Label timeSave;
     @FXML
-    private Label username;
+    public Label username;
     @FXML
     private MenuItem menuItem_quit;
     @FXML
@@ -74,8 +76,6 @@ public class PlayerOriginalController implements Initializable {
     private TableColumn<VideoSimpleStringProperty, String> tableView_permission;
     @FXML
     private TableView<VideoSimpleStringProperty> tableView;
-    @FXML
-    private VBox centreView;
 
     public int i = -1, j = -1;
     public double volume;
@@ -83,15 +83,17 @@ public class PlayerOriginalController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        user = new User("child",1);
         timeNow.setText("-:-");
         timeSave.setText("-:-");
-        username.setText("aaaabbbbcccc");
+        username.setText(user.getUsername());
         videos = FXCollections.observableArrayList();
         loadPlayList();
         tableView.setVisible(true);
         tableView.setDisable(false);
         mediaView.setDisable(true);
         mediaView.setVisible(false);
+
     }
 
 
@@ -196,10 +198,14 @@ public class PlayerOriginalController implements Initializable {
         try {
             Stage stage = new Stage();
             FXMLLoader fxmlLoader = new FXMLLoader(PlayerOriginal.class.getResource("connection.fxml"));
-            Scene scene = new Scene(fxmlLoader.load(), 800, 400);
+          //  Parent root = fxmlLoader.load();
+            Scene scene = new Scene(fxmlLoader.load(), 400, 230);
+            PlayerOriginalController p =this;
+            scene.setUserData(p);
             stage.setTitle("Connection");
             stage.setScene(scene);
             stage.show();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -263,7 +269,7 @@ public class PlayerOriginalController implements Initializable {
 
     }
 
-    private String readJsonFile(String pathFile) {
+    public static String readJsonFile(String pathFile) {
         String jsonStr = "";
         try {
             File jsonFile = new File(pathFile);
@@ -419,5 +425,6 @@ public class PlayerOriginalController implements Initializable {
         }
         return res;
     }
+
 
 }
