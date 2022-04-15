@@ -38,7 +38,7 @@ import java.nio.file.Paths;
 import java.util.*;
 
 public class PlayerOriginalController implements Initializable {
-    private static String pathPlayList = "src/main/java/com/example/playeroriginal/jsonData/playlist.json";
+    public static String pathPlayList = "src/main/java/com/example/playeroriginal/jsonData/playlist.json";
     public static String pathUsers = "src/main/java/com/example/playeroriginal/jsonData/users.json";
     private static ObservableList<VideoSimpleStringProperty> videos;
     private static int selectedId = 0;
@@ -104,6 +104,22 @@ public class PlayerOriginalController implements Initializable {
     }
 
     public void actionManage(ActionEvent actionEvent) {
+
+        try {
+            Stage stage = new Stage();
+            FXMLLoader fxmlLoader = new FXMLLoader(PlayerOriginal.class.getResource("videoManager.fxml"));
+            Scene scene = new Scene(fxmlLoader.load(), 600, 400);
+            PlayerOriginalController p =this;
+            scene.setUserData(p);
+            stage.setTitle("Manager");
+            stage.setScene(scene);
+            stage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
     }
 
     public void actionAbout(ActionEvent actionEvent) {
@@ -310,7 +326,7 @@ public class PlayerOriginalController implements Initializable {
         }
     }
 
-    private void writeJsonFile(String pathFile, String dataJson) {
+    public void writeJsonFile(String pathFile, String dataJson) {
         File file = new File(pathPlayList);
         if (file.exists())
             file.delete();
@@ -341,7 +357,7 @@ public class PlayerOriginalController implements Initializable {
         return res;
     }
 
-    private ArrayList<Video> getListVideoFromJson() {
+    public static ArrayList<Video> getListVideoFromJson() {
         String jsonData = readJsonFile(pathPlayList);
         List<Video> playList = new ArrayList<Video>();
         playList = JSON.parseObject(jsonData, new TypeReference<ArrayList<Video>>() {

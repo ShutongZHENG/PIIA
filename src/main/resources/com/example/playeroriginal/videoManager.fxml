@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<?import javafx.scene.layout.BorderPane?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.playeroriginal.VideoManagerController">
+    <center>
+        <TableView fx:id="tableView" editable="true" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <columns>
+                <TableColumn fx:id="tableView_name" prefWidth="168.0" text="Name">
+                <cellValueFactory>
+                    <PropertyValueFactory property="name" />
+                </cellValueFactory>
+                </TableColumn>
+
+                <TableColumn fx:id="tableView_duration" prefWidth="159.0" text="Duration">
+                <cellValueFactory>
+                    <PropertyValueFactory property="duration" />
+                </cellValueFactory>
+                </TableColumn>
+                <TableColumn fx:id="tableView_type" prefWidth="122.0" text="Type">
+                <cellValueFactory>
+                    <PropertyValueFactory property="type" />
+                </cellValueFactory>
+                </TableColumn>
+                <TableColumn fx:id="tableView_permission" minWidth="0.0" prefWidth="150.0" text="Permission">
+                <cellValueFactory>
+                    <PropertyValueFactory property="permission" />
+                </cellValueFactory>
+                </TableColumn>
+            </columns>
+        </TableView>
+    </center>
+    <bottom>
+        <ButtonBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <buttons>
+                <Button fx:id="bt_cancel" mnemonicParsing="false" onAction="#actionCancel" text="Cancel" />
+                <Button fx:id="bt_ok" mnemonicParsing="false" onAction="#actionOK" text="Ok" />
+            </buttons>
+        </ButtonBar>
+    </bottom>
+</BorderPane>
