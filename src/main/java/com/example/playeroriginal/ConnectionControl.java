@@ -32,12 +32,15 @@ public class ConnectionControl extends Application {
        PlayerOriginalController playerOriginalController =(PlayerOriginalController) scene.getUserData() ;
        String UserDataJson = PlayerOriginalController.readJsonFile(PlayerOriginalController.pathUsers);
        ArrayList<User> users = getListUserFromJson(UserDataJson);
+
        for (int i =0; i< users.size();i++){
-           System.out.println(users.size());
-           System.out.println("USername: "+username_connection.getText() +"  Pwds: "+ password_connection.getText());
-           if (users.get(i).getUsername() == username_connection.getText() && users.get(i).getPasswords() == password_connection.getText()){
-               PlayerOriginalController.loginSuccess =  true;
+           if (users.get(i).getUsername().equals(username_connection.getText() ) && users.get(i).getPasswords().equals(password_connection.getText())){
+
                playerOriginalController.username.setText(username_connection.getText());
+               playerOriginalController.user = new User(username_connection.getText(),users.get(i).permission);
+               playerOriginalController.loadPlayList();
+               playerOriginalController.updateFonction();
+
            }
 
        }

@@ -46,8 +46,7 @@ public class PlayerOriginalController implements Initializable {
     private static Media mediaPlaying;
     private static MediaPlayer mediaPlayer;
     //private static MediaView mediaView;
-    public static User user;
-    public static boolean loginSuccess;
+    public  User user;
 
 
     @FXML
@@ -57,9 +56,11 @@ public class PlayerOriginalController implements Initializable {
     @FXML
     public Label username;
     @FXML
-    private MenuItem menuItem_quit;
+    private MenuItem menuItemOpen;
     @FXML
-    private MenuItem menuItem_open;
+    private MenuItem menuOpenRecent;
+    @FXML
+    private MenuItem menuItemfileManagement;
     @FXML
     private ImageView btPlay;
     @FXML
@@ -84,6 +85,7 @@ public class PlayerOriginalController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         user = new User("child",1);
+        updateFonction();
         timeNow.setText("-:-");
         timeSave.setText("-:-");
         username.setText(user.getUsername());
@@ -123,7 +125,24 @@ public class PlayerOriginalController implements Initializable {
     }
 
     public void actionPlayList(ActionEvent actionEvent) {
-        //  listview.setItems(dataList);
+        if (isPlaying == true){
+            Stage stage = (Stage)mediaView.getScene().getWindow();
+            stage.setHeight(stage.getHeight()-100);
+            playOrStop();
+        }
+
+
+        if (mediaPlayer != null)
+            mediaPlayer.pause();
+        if (mediaPlaying != null)
+            mediaPlaying = null;
+
+
+        tableView.setVisible(true);
+        tableView.setDisable(false);
+        mediaView.setDisable(true);
+        mediaView.setVisible(false);
+        isPlaying = false;
     }
 
     public void actionStart(ActionEvent actionEvent) {
@@ -330,11 +349,12 @@ public class PlayerOriginalController implements Initializable {
         return (ArrayList<Video>) playList;
     }
 
-    private void loadPlayList() {
+    public void loadPlayList() {
         tableView.getItems().clear();
         videos.clear();
 
         for (Video v : getListVideoFromJson()) {
+            if (v.permission <= user.getPermission())
             videos.add(new VideoSimpleStringProperty(v.name, v.src, v.permission, v.type, v.duration));
         }
         tableView.getItems().addAll(videos);
@@ -425,6 +445,16 @@ public class PlayerOriginalController implements Initializable {
         }
         return res;
     }
-
+    public void updateFonction(){
+        if (user.permission == 7){
+            menuItemOpen.setDisable(false);
+            menuOpenRecent.setDisable(false);
+            menuItemfileManagement.setDisable(false);
+        }else {
+            menuItemOpen.setDisable(true);
+            menuOpenRecent.setDisable(true);
+            menuItemfileManagement.setDisable(true);
+        }
+    }
 
 }
