@@ -7,15 +7,15 @@ public class VideoSimpleStringProperty {
     public final SimpleStringProperty src;
     public final SimpleStringProperty permission;
     public final SimpleStringProperty type;
-    public final SimpleStringProperty duration;
+    public final SimpleStringProperty genre;
 
 
-    public VideoSimpleStringProperty(String name, String src, int permission, String  type, String duration) {
+    public VideoSimpleStringProperty(String name, String src, int permission, String type, String genre) {
         this.name = new SimpleStringProperty(name);
         this.src = new SimpleStringProperty(src);
         this.permission = new SimpleStringProperty(String.valueOf(permission));
-        this.type = new SimpleStringProperty(type) ;
-        this.duration = new SimpleStringProperty(duration);
+        this.type = new SimpleStringProperty(type);
+        this.genre = new SimpleStringProperty(genre);
     }
 
     public String getName() {
@@ -66,15 +66,15 @@ public class VideoSimpleStringProperty {
         this.type.set(type);
     }
 
-    public String getDuration() {
-        return duration.get();
+    public String getGenre() {
+        return genre.get();
     }
 
-    public SimpleStringProperty durationProperty() {
-        return duration;
+    public SimpleStringProperty genreProperty() {
+        return genre;
     }
 
-    public void setDuration(String duration) {
-        this.duration.set(duration);
+    public void setGenre(String genre) {
+        this.genre.set(genre);
     }
 }

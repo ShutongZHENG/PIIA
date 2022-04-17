@@ -4,30 +4,28 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.example.playeroriginal.jsonData.Video;
 import javafx.application.Platform;
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Group;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
-import javafx.scene.media.MediaPlayer;
-import javafx.scene.media.MediaView;
+import javafx.scene.media.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.scene.media.Media;
+import javafx.util.Duration;
 
 
 import java.io.*;
@@ -37,6 +35,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
+
 public class PlayerOriginalController implements Initializable {
     public static String pathPlayList = "src/main/java/com/example/playeroriginal/jsonData/playlist.json";
     public static String pathUsers = "src/main/java/com/example/playeroriginal/jsonData/users.json";
@@ -45,10 +44,11 @@ public class PlayerOriginalController implements Initializable {
     private static boolean isPlaying = false;
     private static Media mediaPlaying;
     private static MediaPlayer mediaPlayer;
-    //private static MediaView mediaView;
-    public  User user;
+    public javafx.util.Duration totalDuration;
+    public User user;
 
-
+    @FXML
+    private Slider timeBar;
     @FXML
     private Label timeNow;
     @FXML
@@ -70,7 +70,7 @@ public class PlayerOriginalController implements Initializable {
     @FXML
     private TableColumn<VideoSimpleStringProperty, String> tableView_name;
     @FXML
-    private TableColumn<VideoSimpleStringProperty, String> tableView_duration;
+    private TableColumn<VideoSimpleStringProperty, String> tableView_genre;
     @FXML
     private TableColumn<VideoSimpleStringProperty, String> tableView_type;
     @FXML
@@ -80,21 +80,26 @@ public class PlayerOriginalController implements Initializable {
 
     public int i = -1, j = -1;
     public double volume;
+    public static Stage stage = new Stage();
 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        user = new User("child",1);
+        user = new User("child", 1);
         updateFonction();
         timeNow.setText("-:-");
         timeSave.setText("-:-");
         username.setText(user.getUsername());
         videos = FXCollections.observableArrayList();
         loadPlayList();
+
+
         tableView.setVisible(true);
         tableView.setDisable(false);
         mediaView.setDisable(true);
         mediaView.setVisible(false);
+
+
 
     }
 
@@ -106,10 +111,10 @@ public class PlayerOriginalController implements Initializable {
     public void actionManage(ActionEvent actionEvent) {
 
         try {
-            Stage stage = new Stage();
+
             FXMLLoader fxmlLoader = new FXMLLoader(PlayerOriginal.class.getResource("videoManager.fxml"));
             Scene scene = new Scene(fxmlLoader.load(), 600, 400);
-            PlayerOriginalController p =this;
+            PlayerOriginalController p = this;
             scene.setUserData(p);
             stage.setTitle("Manager");
             stage.setScene(scene);
@@ -141,9 +146,9 @@ public class PlayerOriginalController implements Initializable {
     }
 
     public void actionPlayList(ActionEvent actionEvent) {
-        if (isPlaying == true){
-            Stage stage = (Stage)mediaView.getScene().getWindow();
-            stage.setHeight(stage.getHeight()-100);
+        if (isPlaying == true) {
+            Stage stage = (Stage) mediaView.getScene().getWindow();
+            stage.setHeight(stage.getHeight() - 100);
             playOrStop();
         }
 
@@ -166,15 +171,38 @@ public class PlayerOriginalController implements Initializable {
     }
 
     public void actionStop(ActionEvent actionEvent) {
+        if (isPlaying) {
+            Stage stage = (Stage) mediaView.getScene().getWindow();
+            stage.setHeight(stage.getHeight() - 100);
+            playOrStop();
+        }
+
+
+        if (mediaPlayer != null)
+            mediaPlayer.pause();
+        if (mediaPlaying != null)
+            mediaPlaying = null;
+
+
+        tableView.setVisible(true);
+        tableView.setDisable(false);
+        mediaView.setDisable(true);
+        mediaView.setVisible(false);
+        isPlaying = false;
     }
 
     public void actionSkipPre(ActionEvent actionEvent) {
-
+        if (selectedId >= 0 && isPlaying) {
+            mediaPlayer.seek(new Duration(0));
+        }
 
     }
 
     public void actionSkipNext(ActionEvent actionEvent) {
+        if (selectedId >= 0 && isPlaying) {
+            mediaPlayer.seek(new Duration((mediaPlayer.getTotalDuration().toSeconds() - 2.0) * 1000));
 
+        }
 
     }
 
@@ -231,11 +259,11 @@ public class PlayerOriginalController implements Initializable {
     public void actionAccount(ActionEvent actionEvent) {
         //登录
         try {
-            Stage stage = new Stage();
+
             FXMLLoader fxmlLoader = new FXMLLoader(PlayerOriginal.class.getResource("connection.fxml"));
-          //  Parent root = fxmlLoader.load();
+            //  Parent root = fxmlLoader.load();
             Scene scene = new Scene(fxmlLoader.load(), 400, 230);
-            PlayerOriginalController p =this;
+            PlayerOriginalController p = this;
             scene.setUserData(p);
             stage.setTitle("Connection");
             stage.setScene(scene);
@@ -296,7 +324,7 @@ public class PlayerOriginalController implements Initializable {
         }
         if (isNotExsitFile) {
             Media media = new Media(new File(file.getPath()).toURI().toString());
-            Video video = new Video(file.getName(), file.getPath(), 7, getExtension(file.getPath()), media.getDuration().toString());
+            Video video = new Video(file.getName(), file.getPath(), 7, getExtension(file.getPath()), "");
             playList.add(video);
             writeJsonFile(pathPlayList, JSON.toJSONString(playList));
             loadPlayList();
@@ -371,7 +399,7 @@ public class PlayerOriginalController implements Initializable {
 
         for (Video v : getListVideoFromJson()) {
             if (v.permission <= user.getPermission())
-            videos.add(new VideoSimpleStringProperty(v.name, v.src, v.permission, v.type, v.duration));
+                videos.add(new VideoSimpleStringProperty(v.name, v.src, v.permission, v.type, v.genre));
         }
         tableView.getItems().addAll(videos);
 
@@ -382,7 +410,7 @@ public class PlayerOriginalController implements Initializable {
         // 判断是否能能读文件
         // 若不能 则 isplaying =false； 能 isplaying  = true
         // isplaying 能用则可以使用 skip 和 pre
-        if (isPlaying == false) {
+        if (!isPlaying) {
             try {
 
                 String videoFileURIStr = new File(getPathSelectedVideo()).toURI().toString();
@@ -390,28 +418,87 @@ public class PlayerOriginalController implements Initializable {
                 mediaPlayer = new MediaPlayer(mediaPlaying);
                 mediaPlayer.setAutoPlay(true);
                 mediaView.setMediaPlayer(mediaPlayer);
+                mediaPlayer.setOnEndOfMedia(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (isPlaying) {
+                            Stage stage = (Stage) mediaView.getScene().getWindow();
+                            stage.setHeight(stage.getHeight() - 100);
+                            playOrStop();
+                        }
+                        timeBar.setValue(0);
+                        if (mediaPlayer != null)
+                            mediaPlayer.pause();
+                        if (mediaPlaying != null)
+                            mediaPlaying = null;
+                        timeNow.setText("-:-");
+                        timeSave.setText("-:-");
 
+
+                        tableView.setVisible(true);
+                        tableView.setDisable(false);
+                        mediaView.setDisable(true);
+                        mediaView.setVisible(false);
+                        isPlaying = false;
+                    }
+                });
+                totalDuration = mediaPlayer.getTotalDuration();
+                String totalString = DurationToString(totalDuration);
+                mediaPlayer.volumeProperty().bindBidirectional(volume_slider.valueProperty());
+                mediaPlayer.currentTimeProperty().addListener(new ChangeListener<Duration>() {
+                    @Override
+                    public void changed(ObservableValue<? extends Duration> observable, Duration oldValue, Duration newValue) {
+                        if (!timeBar.isValueChanging()){
+                            timeBar.setValue(newValue.toSeconds());
+                        }
+                        timeNow.setText(DurationToString(newValue));
+                    }
+                });
+
+                mediaPlayer.totalDurationProperty().addListener(new ChangeListener<Duration>() {
+                    @Override
+                    public void changed(ObservableValue<? extends Duration> observableValue, Duration duration, Duration t1) {
+                        timeBar.setMax(t1.toSeconds());
+                        timeSave.setText(String.valueOf(DurationToString(mediaPlayer.getTotalDuration())));
+                    }
+                });
+
+                volume_slider.valueProperty().addListener(new InvalidationListener() {
+                    @Override
+                    public void invalidated(Observable observable) {
+                        mediaPlayer.setVolume(volume_slider.getValue());
+                        System.out.println(mediaPlayer.getVolume()+"==="+volume_slider.getValue());
+                    }
+                });
+
+                timeBar.valueChangingProperty().addListener(new ChangeListener<Boolean>() {
+                    @Override
+                    public void changed(ObservableValue<? extends Boolean> observableValue, Boolean aBoolean, Boolean t1) {
+                                    if (!t1){
+                                        mediaPlayer.seek(Duration.seconds(timeBar.getValue()));
+                                    }
+                    }
+                });
+
+                timeBar.valueProperty().addListener(new ChangeListener<Number>() {
+                    @Override
+                    public void changed(ObservableValue<? extends Number> observableValue, Number oldValue, Number newValue) {
+                            double currenTime = mediaPlayer.getCurrentTime().toSeconds();
+                            if (Math.abs(currenTime-newValue.doubleValue())>0.5){
+                                mediaPlayer.seek(Duration.seconds(newValue.doubleValue()));
+                            }
+
+                    }
+                });
 
                 DoubleProperty mvw = mediaView.fitWidthProperty();
                 DoubleProperty mvh = mediaView.fitHeightProperty();
                 mvw.bind(Bindings.selectDouble(mediaView.sceneProperty(), "width"));
                 mvh.bind(Bindings.selectDouble(mediaView.sceneProperty(), "height"));
                 mediaView.setPreserveRatio(true);
-                Stage stage = (Stage)mediaView.getScene().getWindow();
-                    System.out.println("W: "+stage.getWidth() +"   H:"+stage.getHeight());
-                    stage.setHeight(stage.getHeight()+100);
-            //    setScene(new Scene(new Group(mediaView), size.getWidth(), size.getHeight()));
-
-
-
-//                paneView.getChildren().clear();
-//                paneView.getChildren().add(mediaView);
-
-//                mediaView.fitHeightProperty().bind(paneView.heightProperty());
-//                mediaView.fitWidthProperty().bind(paneView.widthProperty());
-//                mediaView.setX((paneView.getWidth() - mediaView.getFitWidth())/2);
-//                System.out.println("paneW: "+paneView.getWidth() +"mediaW: "+mediaView.getFitWidth());
-//                mediaView.setY((paneView.getHeight() - mediaView.getFitHeight())/2);
+                Stage stage = (Stage) mediaView.getScene().getWindow();
+                System.out.println("W: " + stage.getWidth() + "   H:" + stage.getHeight());
+                stage.setHeight(stage.getHeight() + 100);
                 isPlaying = true;
                 tableView.setVisible(false);
                 tableView.setDisable(true);
@@ -429,6 +516,7 @@ public class PlayerOriginalController implements Initializable {
             try {
                 btPlay.setImage(new Image(imageFile.toUri().toURL().toExternalForm()));
                 i = i * -1;
+                mediaPlayer.play();
             } catch (IOException e) {
                 System.out.println("Error: can't change image pause");
             }
@@ -438,6 +526,7 @@ public class PlayerOriginalController implements Initializable {
             try {
                 btPlay.setImage(new Image(imageFile.toUri().toURL().toExternalForm()));
                 i = i * -1;
+                mediaPlayer.pause();
             } catch (IOException e) {
                 System.out.println("Error: can't change image play");
             }
@@ -461,16 +550,26 @@ public class PlayerOriginalController implements Initializable {
         }
         return res;
     }
-    public void updateFonction(){
-        if (user.permission == 7){
+
+    public void updateFonction() {
+        if (user.permission == 7) {
             menuItemOpen.setDisable(false);
             menuOpenRecent.setDisable(false);
             menuItemfileManagement.setDisable(false);
-        }else {
+        } else {
             menuItemOpen.setDisable(true);
             menuOpenRecent.setDisable(true);
             menuItemfileManagement.setDisable(true);
         }
     }
+
+    public String DurationToString(javafx.util.Duration duration) {
+        int time = (int) duration.toSeconds();
+        int hour = time / 3600;
+        int minute = (time - hour * 3600) / 60;
+        int second = time % 60;
+        return hour + ":" + minute + ":" + second;
+    }
+
 
 }

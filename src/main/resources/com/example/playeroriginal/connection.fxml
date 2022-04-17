@@ -11,22 +11,22 @@
 
 <AnchorPane prefHeight="234.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.example.playeroriginal.ConnectionControl">
-   <children>
-      <Text layoutX="94.0" layoutY="63.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter Your Username And Password" wrappingWidth="250.240234375">
-         <font>
-            <Font size="16.0" />
-         </font>
-      </Text>
-      <ImageView fitHeight="89.0" fitWidth="97.0" layoutX="14.0" layoutY="73.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../../../icon/logo_com.png" />
-         </image>
-      </ImageView>
-      <Text layoutX="94.0" layoutY="105.0" strokeType="OUTSIDE" strokeWidth="0.0" text="UserName :" />
-      <Text layoutX="96.0" layoutY="153.0" strokeMiterLimit="8.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Password :" />
-      <PasswordField fx:id="password_connection" layoutX="171.0" layoutY="135.0" prefHeight="23.0" prefWidth="177.0" />
-      <TextField fx:id="username_connection" layoutX="170.0" layoutY="87.0" prefHeight="8.0" prefWidth="178.0" />
-      <Button fx:id="btn_cancel" layoutX="158.0" layoutY="185.0" mnemonicParsing="false" onAction="#ActionCancel" text="Cancel" />
-      <Button fx:id="btn_login" layoutX="296.0" layoutY="185.0" mnemonicParsing="false" onAction="#Login" text="Login" />
-   </children>
+    <children>
+        <Text layoutX="94.0" layoutY="63.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter Your Username And Password" wrappingWidth="250.240234375">
+            <font>
+                <Font size="16.0" />
+            </font>
+        </Text>
+        <ImageView fitHeight="89.0" fitWidth="97.0" layoutX="14.0" layoutY="73.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../../../icon/logo_com.png" />
+            </image>
+        </ImageView>
+        <Text layoutX="94.0" layoutY="105.0" strokeType="OUTSIDE" strokeWidth="0.0" text="UserName :" />
+        <Text layoutX="96.0" layoutY="153.0" strokeMiterLimit="8.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Password :" />
+        <TextField fx:id="username_connection" layoutX="170.0" layoutY="87.0" prefHeight="8.0" prefWidth="178.0" />
+        <PasswordField fx:id="password_connection" layoutX="171.0" layoutY="135.0" prefHeight="23.0" prefWidth="177.0" />
+        <Button fx:id="btn_cancel" layoutX="158.0" layoutY="185.0" mnemonicParsing="false" onAction="#ActionCancel" text="Cancel" />
+        <Button fx:id="btn_login" layoutX="296.0" layoutY="185.0" mnemonicParsing="false" onAction="#Login" text="Login" />
+    </children>
 </AnchorPane>

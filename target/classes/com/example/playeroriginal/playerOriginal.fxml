@@ -38,7 +38,6 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TableColumn?>
@@ -54,8 +53,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.media.MediaView?>
 
-<BorderPane fx:id="rootLayout" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.example.playeroriginal.PlayerOriginalController">
+<BorderPane fx:id="rootLayout" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.playeroriginal.PlayerOriginalController">
     <center>
         <Pane fx:id="paneView" BorderPane.alignment="CENTER">
             <children>
@@ -63,29 +61,28 @@
                     <columns>
                         <TableColumn fx:id="tableView_name" prefWidth="315.0" resizable="false" text="Name">
                             <cellValueFactory>
-                                <PropertyValueFactory property="name"/>
+                                <PropertyValueFactory property="name" />
                             </cellValueFactory>
                         </TableColumn>
-                        <TableColumn fx:id="tableView_duration" minWidth="0.0" prefWidth="175.0" resizable="false"
-                                     text="Duration">
+                        <TableColumn fx:id="tableView_genre" minWidth="0.0" prefWidth="175.0" resizable="false" text="Genre">
                             <cellValueFactory>
-                                <PropertyValueFactory property="duration"/>
+                                <PropertyValueFactory property="genre" />
                             </cellValueFactory>
                         </TableColumn>
 
                         <TableColumn fx:id="tableView_type" prefWidth="136.0" resizable="false" text="Type">
                             <cellValueFactory>
-                                <PropertyValueFactory property="type"/>
+                                <PropertyValueFactory property="type" />
                             </cellValueFactory>
                         </TableColumn>
                         <TableColumn fx:id="tableView_permission" prefWidth="173.0" resizable="false" text="Permission">
                             <cellValueFactory>
-                                <PropertyValueFactory property="permission"/>
+                                <PropertyValueFactory property="permission" />
                             </cellValueFactory>
                         </TableColumn>
                     </columns>
                 </TableView>
-                <MediaView fx:id="mediaView" fitHeight="200" fitWidth="200"/>
+                <MediaView fx:id="mediaView" fitHeight="200" fitWidth="200" />
             </children>
         </Pane>
     </center>
@@ -95,72 +92,54 @@
                 <menus>
                     <Menu id="menu_file" mnemonicParsing="false" text="File">
                         <items>
-                            <MenuItem id="menuItem_open" fx:id="menuItemOpen" mnemonicParsing="false"
-                                      onAction="#actionOpen" text="Open..."/>
-                            <Menu id="menuItem_openRecent" fx:id="menuOpenRecent" mnemonicParsing="false"
-                                  text="Open Recent"/>
-                            <SeparatorMenuItem mnemonicParsing="false"/>
-                            <MenuItem id="menuItem_fileManagesment" fx:id="menuItemfileManagement"
-                                      mnemonicParsing="false" onAction="#actionManage" text="File management"/>
-                            <SeparatorMenuItem mnemonicParsing="false"/>
-                            <MenuItem id="menuItem_quit" fx:id="menuItem_quit" mnemonicParsing="false"
-                                      onAction="#actionQuit" text="Quit"/>
+                            <MenuItem id="menuItem_open" fx:id="menuItemOpen" mnemonicParsing="false" onAction="#actionOpen" text="Open..." />
+                            <Menu id="menuItem_openRecent" fx:id="menuOpenRecent" mnemonicParsing="false" text="Open Recent" />
+                            <SeparatorMenuItem mnemonicParsing="false" />
+                            <MenuItem id="menuItem_fileManagesment" fx:id="menuItemfileManagement" mnemonicParsing="false" onAction="#actionManage" text="File management" />
+                            <SeparatorMenuItem mnemonicParsing="false" />
+                            <MenuItem id="menuItem_quit" fx:id="menuItem_quit" mnemonicParsing="false" onAction="#actionQuit" text="Quit" />
                         </items>
                     </Menu>
                     <Menu id="menu_play" mnemonicParsing="false" text="Play">
                         <items>
-                            <MenuItem id="menuItem_playList" fx:id="menuItemPlayList" mnemonicParsing="false"
-                                      onAction="#actionPlayList" text="Play List"/>
-                            <SeparatorMenuItem mnemonicParsing="false"/>
-                            <MenuItem id="menuItem_start" fx:id="menuItemStart" mnemonicParsing="false"
-                                      onAction="#actionStart" text="Start"/>
-                            <MenuItem id="menuItem_stop" fx:id="menuItemStop" mnemonicParsing="false"
-                                      onAction="#actionStop" text="Stop"/>
-                            <MenuItem id="menuItem_skipPre" fx:id="menuItemSkipPre" disable="true"
-                                      mnemonicParsing="false" onAction="#actionSkipPre" text="Skip Previous"/>
-                            <MenuItem id="menuItem_skipNext" fx:id="menuItemSkipNext" disable="true"
-                                      mnemonicParsing="false" onAction="#actionSkipNext" text="Skip Next"/>
+                            <MenuItem id="menuItem_playList" fx:id="menuItemPlayList" mnemonicParsing="false" onAction="#actionPlayList" text="Play List" />
+                            <SeparatorMenuItem mnemonicParsing="false" />
+                            <MenuItem id="menuItem_start" fx:id="menuItemStart" mnemonicParsing="false" onAction="#actionStart" text="Start" />
+                            <MenuItem id="menuItem_stop" fx:id="menuItemStop" mnemonicParsing="false" onAction="#actionStop" text="Stop" />
+                            <MenuItem id="menuItem_skipPre" fx:id="menuItemSkipPre" mnemonicParsing="false" onAction="#actionSkipPre" text="Skip Start" />
+                            <MenuItem id="menuItem_skipNext" fx:id="menuItemSkipNext" mnemonicParsing="false" onAction="#actionSkipNext" text="Skip End" />
                         </items>
                     </Menu>
                     <Menu id="menu_audio" mnemonicParsing="false" text="Audio">
                         <items>
-                            <MenuItem id="menuItem_volumeUp" fx:id="menuItemVolumeUp" mnemonicParsing="false"
-                                      onAction="#actionVolumeUp" text="Volume Up"/>
-                            <MenuItem id="menuItem_volumeDown" fx:id="menuItemVolumeDown" mnemonicParsing="false"
-                                      onAction="#actionVolumeDown" text="Volume Down"/>
-                            <MenuItem id="menuItem_mute" fx:id="menuItemMute" mnemonicParsing="false"
-                                      onAction="#actionMute" text="Mute"/>
+                            <MenuItem id="menuItem_volumeUp" fx:id="menuItemVolumeUp" mnemonicParsing="false" onAction="#actionVolumeUp" text="Volume Up" />
+                            <MenuItem id="menuItem_volumeDown" fx:id="menuItemVolumeDown" mnemonicParsing="false" onAction="#actionVolumeDown" text="Volume Down" />
+                            <MenuItem id="menuItem_mute" fx:id="menuItemMute" mnemonicParsing="false" onAction="#actionMute" text="Mute" />
                         </items>
                     </Menu>
                     <Menu id="menu_setting" mnemonicParsing="false" text="Setting">
                         <items>
                             <Menu mnemonicParsing="false" text="Language">
                                 <items>
-                                    <MenuItem fx:id="language_english" mnemonicParsing="false" onAction="#actionEnglish"
-                                              text="English"/>
-                                    <MenuItem fx:id="language_french" mnemonicParsing="false" onAction="#actionFrench"
-                                              text="Français"/>
-                                    <MenuItem fx:id="language_chinese" mnemonicParsing="false" onAction="#actionChinese"
-                                              text="中文"/>
+                                    <MenuItem fx:id="language_english" mnemonicParsing="false" onAction="#actionEnglish" text="English" />
+                                    <MenuItem fx:id="language_french" mnemonicParsing="false" onAction="#actionFrench" text="Français" />
+                                    <MenuItem fx:id="language_chinese" mnemonicParsing="false" onAction="#actionChinese" text="中文" />
                                 </items>
                             </Menu>
-                            <MenuItem id="menuItem_account" fx:id="menuItemAccount" mnemonicParsing="false"
-                                      onAction="#actionAccount" text="Connection"/>
+                            <MenuItem id="menuItem_account" fx:id="menuItemAccount" mnemonicParsing="false" onAction="#actionAccount" text="Connection" />
                         </items>
                     </Menu>
                     <Menu id="menu_help" mnemonicParsing="false" text="Help">
                         <items>
-                            <MenuItem id="menuItem_playerHelp" fx:id="menuItemPlayerHelp" mnemonicParsing="false"
-                                      onAction="#actionPlayerHelp" text="Player Help"/>
-                            <MenuItem id="menuItem_aboutPlayer" fx:id="menuItemAbout" mnemonicParsing="false"
-                                      onAction="#actionAbout" text="About Player"/>
+                            <MenuItem id="menuItem_playerHelp" fx:id="menuItemPlayerHelp" mnemonicParsing="false" onAction="#actionPlayerHelp" text="Player Help" />
+                            <MenuItem id="menuItem_aboutPlayer" fx:id="menuItemAbout" mnemonicParsing="false" onAction="#actionAbout" text="About Player" />
                         </items>
                     </Menu>
                 </menus>
             </MenuBar>
             <Label fx:id="username" text="Label" StackPane.alignment="CENTER_RIGHT">
                 <StackPane.margin>
-                    <Insets right="10.0"/>
+                    <Insets right="10.0" />
                 </StackPane.margin>
             </Label>
         </StackPane>
@@ -170,46 +149,33 @@
             <children>
                 <AnchorPane prefHeight="49.0" prefWidth="800.0" snapToPixel="false">
                     <children>
-                        <ImageView id="bt_volume" fitHeight="23.0" fitWidth="20.0" layoutX="20.0" layoutY="33.0"
-                                   pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="12.0"
-                                   AnchorPane.topAnchor="33.0">
+                        <ImageView id="bt_volume" fitHeight="23.0" fitWidth="20.0" layoutX="20.0" layoutY="33.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="12.0" AnchorPane.topAnchor="33.0">
                             <image>
-                                <Image url="@../../../icon/volumeOn.png"/>
+                                <Image url="@../../../icon/volumeOn.png" />
                             </image>
                         </ImageView>
-                        <ImageView id="bt_play" fx:id="btPlay" fitHeight="33.0" fitWidth="26.0" layoutX="387.0"
-                                   layoutY="23.0" onMouseClicked="#actionPlay" pickOnBounds="true" preserveRatio="true"
-                                   AnchorPane.bottomAnchor="4.0" AnchorPane.leftAnchor="386.9285717010498"
-                                   AnchorPane.rightAnchor="387.0714282989502" AnchorPane.topAnchor="28.0">
+                        <ImageView id="bt_play" fx:id="btPlay" fitHeight="33.0" fitWidth="26.0" layoutX="387.0" layoutY="23.0" onMouseClicked="#actionPlay" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="4.0" AnchorPane.leftAnchor="386.9285717010498" AnchorPane.rightAnchor="387.0714282989502" AnchorPane.topAnchor="28.0">
                             <image>
-                                <Image url="@../../../icon/play.png"/>
+                                <Image url="@../../../icon/play.png" />
                             </image>
                             <viewport>
-                                <Rectangle2D/>
+                                <Rectangle2D />
                             </viewport>
                         </ImageView>
-                        <ImageView id="bt_skipNext" fitHeight="23.0" fitWidth="20.0" layoutX="452.0" layoutY="35.0"
-                                   pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="10.0"
-                                   AnchorPane.topAnchor="35.0">
+                        <ImageView id="bt_skipNext" fitHeight="23.0" fitWidth="20.0" layoutX="452.0" layoutY="35.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="10.0" AnchorPane.topAnchor="35.0">
                             <image>
-                                <Image url="@../../../icon/skipNext.png"/>
+                                <Image url="@../../../icon/skipNext.png" />
                             </image>
                         </ImageView>
-                        <ImageView id="bt_skipPrevious" fitHeight="23.0" fitWidth="20.0" layoutX="323.0" layoutY="35.0"
-                                   pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="10.0"
-                                   AnchorPane.topAnchor="35.0">
+                        <ImageView id="bt_skipPrevious" fitHeight="23.0" fitWidth="20.0" layoutX="323.0" layoutY="35.0" onMouseClicked="#actionSkipPre" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="10.0" AnchorPane.topAnchor="35.0">
                             <image>
-                                <Image url="@../../../icon/skipPrevious.png"/>
+                                <Image url="@../../../icon/skipPrevious.png" />
                             </image>
                         </ImageView>
-                        <ProgressBar id="timeBar" fx:id="timeBar" layoutX="96.0" layoutY="3.0" prefHeight="11.0"
-                                     prefWidth="607.0" progress="0.0" AnchorPane.bottomAnchor="49.0"
-                                     AnchorPane.topAnchor="5.0"/>
-                        <Label id="timeNow" fx:id="timeNow" layoutX="47.0" text="Label" AnchorPane.bottomAnchor="48.0"
-                               AnchorPane.topAnchor="0.0"/>
-                        <Label id="timeSave" fx:id="timeSave" layoutX="725.0" text="Label"/>
-                        <Slider fx:id="volume_slider" layoutX="59.0" layoutY="35.0" value="50.0"
-                                AnchorPane.bottomAnchor="14.5" AnchorPane.topAnchor="35.0"/>
+                        <Label id="timeNow" fx:id="timeNow" layoutX="47.0" text="Label" AnchorPane.bottomAnchor="48.0" AnchorPane.topAnchor="0.0" />
+                        <Label id="timeSave" fx:id="timeSave" layoutX="725.0" text="Label" />
+                        <Slider fx:id="volume_slider" layoutX="59.0" layoutY="35.0" value="50.0" AnchorPane.bottomAnchor="14.5" AnchorPane.topAnchor="35.0" />
+                        <Slider fx:id="timeBar" layoutX="85.0" layoutY="2.0" prefHeight="14.0" prefWidth="638.0" />
                     </children>
                 </AnchorPane>
             </children>

@@ -29,7 +29,7 @@ public class VideoManagerController implements Initializable {
     @FXML
     private TableColumn<VideoSimpleStringProperty, String> tableView_name;
     @FXML
-    private TableColumn<VideoSimpleStringProperty, String> tableView_duration;
+    private TableColumn<VideoSimpleStringProperty, String> tableView_genre;
     @FXML
     private TableColumn<VideoSimpleStringProperty, String> tableView_type;
     @FXML
@@ -38,41 +38,45 @@ public class VideoManagerController implements Initializable {
     private TableView<VideoSimpleStringProperty> tableView;
 
 
-
-     private ObservableList<VideoSimpleStringProperty> videos;
+    private ObservableList<VideoSimpleStringProperty> videos;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         tableView.setEditable(true);
         tableView_permission.setEditable(true);
         tableView_permission.setCellFactory(ChoiceBoxTableCell.forTableColumn("1", "3", "7"));
+        tableView_genre.setEditable(true);
+        tableView_genre.setCellFactory(ChoiceBoxTableCell.forTableColumn("Action and adventure", "Animation", "Comedy", "Drama", "Historical",
+                "Horror","Science fiction","Western"));
         tableView.getItems().clear();
         videos = FXCollections.observableArrayList();
         for (Video v : PlayerOriginalController.getListVideoFromJson()) {
-            videos.add(new VideoSimpleStringProperty(v.name, v.src, v.permission, v.type, v.duration));
+            videos.add(new VideoSimpleStringProperty(v.name, v.src, v.permission, v.type, v.genre));
         }
         tableView.getItems().addAll(videos);
 
     }
-    public void actionCancel(){
-        System.out.println("cancel");
 
+    public void actionCancel() {
+        System.out.println("cancel");
+        PlayerOriginalController.stage.close();
     }
-    public void actionOK(){
+
+    public void actionOK() {
         System.out.println("ok");
-        for (VideoSimpleStringProperty v: videos) {
+        for (VideoSimpleStringProperty v : videos) {
             System.out.println(v.permission.getValue());
         }
         Scene scene = bt_ok.getScene();
-        PlayerOriginalController playerOriginalController =(PlayerOriginalController) scene.getUserData();
+        PlayerOriginalController playerOriginalController = (PlayerOriginalController) scene.getUserData();
         ArrayList<Video> videosArraylist = new ArrayList<Video>();
-        for (VideoSimpleStringProperty v : videos ){
-            videosArraylist.add(new Video(v.getName(),v.getSrc(), Integer.parseInt(v.getPermission()),v.getType(),v.getDuration()));
+        for (VideoSimpleStringProperty v : videos) {
+            videosArraylist.add(new Video(v.getName(), v.getSrc(), Integer.parseInt(v.getPermission()), v.getType(), v.getGenre()));
         }
-        playerOriginalController.writeJsonFile(PlayerOriginalController.pathPlayList , JSON.toJSONString(videosArraylist));
+        playerOriginalController.writeJsonFile(PlayerOriginalController.pathPlayList, JSON.toJSONString(videosArraylist));
         playerOriginalController.loadPlayList();
 
-
+        PlayerOriginalController.stage.close();
 
     }
 }

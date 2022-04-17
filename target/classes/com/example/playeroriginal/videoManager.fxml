@@ -12,25 +12,25 @@
         <TableView fx:id="tableView" editable="true" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <columns>
                 <TableColumn fx:id="tableView_name" prefWidth="168.0" text="Name">
-                <cellValueFactory>
-                    <PropertyValueFactory property="name" />
-                </cellValueFactory>
+                    <cellValueFactory>
+                        <PropertyValueFactory property="name" />
+                    </cellValueFactory>
                 </TableColumn>
 
-                <TableColumn fx:id="tableView_duration" prefWidth="159.0" text="Duration">
-                <cellValueFactory>
-                    <PropertyValueFactory property="duration" />
-                </cellValueFactory>
+                <TableColumn fx:id="tableView_genre" prefWidth="159.0" text="Genre">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="genre" />
+                    </cellValueFactory>
                 </TableColumn>
                 <TableColumn fx:id="tableView_type" prefWidth="122.0" text="Type">
-                <cellValueFactory>
-                    <PropertyValueFactory property="type" />
-                </cellValueFactory>
+                    <cellValueFactory>
+                        <PropertyValueFactory property="type" />
+                    </cellValueFactory>
                 </TableColumn>
                 <TableColumn fx:id="tableView_permission" minWidth="0.0" prefWidth="150.0" text="Permission">
-                <cellValueFactory>
-                    <PropertyValueFactory property="permission" />
-                </cellValueFactory>
+                    <cellValueFactory>
+                        <PropertyValueFactory property="permission" />
+                    </cellValueFactory>
                 </TableColumn>
             </columns>
         </TableView>

@@ -15,20 +15,20 @@ public class Video {
     @JSONField(name = "type")
     public String type;
 
-    @JSONField(name = "duration")
-    public String duration;
+    @JSONField(name = "genre")
+    public String genre;
 
 
     public Video() {
     }
 
-    public Video(String name, String src, int permission, String type, String duration) {
+    public Video(String name, String src, int permission, String type, String genre) {
         super();
         this.name = name;
         this.src = src;
         this.permission = permission;
         this.type = type;
-        this.duration = duration;
+        this.genre = genre;
     }
 
     public String getName() {
@@ -63,11 +63,11 @@ public class Video {
         this.type = type;
     }
 
-    public String getDuration() {
-        return duration;
+    public String getGenre() {
+        return genre;
     }
 
-    public void setDuration(String duration) {
-        this.duration = duration;
+    public void setGenre(String genre) {
+        this.genre = genre;
     }
 }
