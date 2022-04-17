@@ -16,6 +16,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -44,6 +45,8 @@ public class PlayerOriginalController implements Initializable {
     private static boolean isPlaying = false;
     private static Media mediaPlaying;
     private static MediaPlayer mediaPlayer;
+    private static boolean signalPre = false;
+    private static boolean signalNext = false;
     public javafx.util.Duration totalDuration;
     public User user;
 
@@ -77,7 +80,10 @@ public class PlayerOriginalController implements Initializable {
     private TableColumn<VideoSimpleStringProperty, String> tableView_permission;
     @FXML
     private TableView<VideoSimpleStringProperty> tableView;
-
+    @FXML
+    private ImageView preVideo;
+    @FXML
+    private  ImageView nextVideo;
     public int i = -1, j = -1;
     public double volume;
     public static Stage stage = new Stage();
@@ -148,17 +154,20 @@ public class PlayerOriginalController implements Initializable {
     public void actionPlayList(ActionEvent actionEvent) {
         if (isPlaying == true) {
             Stage stage = (Stage) mediaView.getScene().getWindow();
-            stage.setHeight(stage.getHeight() - 100);
+            stage.setHeight(487);
+            stage.setWidth(801);
             playOrStop();
         }
 
-
+        timeBar.setValue(0);
         if (mediaPlayer != null)
             mediaPlayer.pause();
         if (mediaPlaying != null)
             mediaPlaying = null;
-
-
+        timeNow.setText("-:-");
+        timeSave.setText("-:-");
+        mediaPlayer.stop();
+        mediaPlayer.dispose();
         tableView.setVisible(true);
         tableView.setDisable(false);
         mediaView.setDisable(true);
@@ -173,16 +182,20 @@ public class PlayerOriginalController implements Initializable {
     public void actionStop(ActionEvent actionEvent) {
         if (isPlaying) {
             Stage stage = (Stage) mediaView.getScene().getWindow();
-            stage.setHeight(stage.getHeight() - 100);
+            stage.setHeight(487);
+            stage.setWidth(801);
             playOrStop();
         }
 
-
+        timeBar.setValue(0);
         if (mediaPlayer != null)
             mediaPlayer.pause();
         if (mediaPlaying != null)
             mediaPlaying = null;
-
+        timeNow.setText("-:-");
+        timeSave.setText("-:-");
+        mediaPlayer.stop();
+        mediaPlayer.dispose();
 
         tableView.setVisible(true);
         tableView.setDisable(false);
@@ -423,7 +436,8 @@ public class PlayerOriginalController implements Initializable {
                     public void run() {
                         if (isPlaying) {
                             Stage stage = (Stage) mediaView.getScene().getWindow();
-                            stage.setHeight(stage.getHeight() - 100);
+                            stage.setHeight(487);
+                            stage.setWidth(801);
                             playOrStop();
                         }
                         timeBar.setValue(0);
@@ -431,6 +445,7 @@ public class PlayerOriginalController implements Initializable {
                             mediaPlayer.pause();
                         if (mediaPlaying != null)
                             mediaPlaying = null;
+                        mediaPlayer.dispose();
                         timeNow.setText("-:-");
                         timeSave.setText("-:-");
 
@@ -490,15 +505,18 @@ public class PlayerOriginalController implements Initializable {
 
                     }
                 });
-
-                DoubleProperty mvw = mediaView.fitWidthProperty();
-                DoubleProperty mvh = mediaView.fitHeightProperty();
-                mvw.bind(Bindings.selectDouble(mediaView.sceneProperty(), "width"));
-                mvh.bind(Bindings.selectDouble(mediaView.sceneProperty(), "height"));
+             //   mediaView.setFitWidth(stage.getWidth());
+                mediaView.fitWidthProperty().bind(Bindings.selectDouble(mediaView.sceneProperty(), "width"));
+                mediaView.fitHeightProperty().bind(Bindings.selectDouble(mediaView.sceneProperty(), "height"));
                 mediaView.setPreserveRatio(true);
+
                 Stage stage = (Stage) mediaView.getScene().getWindow();
+                //  mediaView.setFitWidth(stage.getWidth());
+
                 System.out.println("W: " + stage.getWidth() + "   H:" + stage.getHeight());
-                stage.setHeight(stage.getHeight() + 100);
+               // stage.setHeight(stage.getHeight() + 100);
+                stage.setWidth(mediaView.getFitWidth());
+                stage.setHeight(mediaView.getFitHeight()+130);
                 isPlaying = true;
                 tableView.setVisible(false);
                 tableView.setDisable(true);
@@ -538,11 +556,26 @@ public class PlayerOriginalController implements Initializable {
     private String getPathSelectedVideo() {
         String res;
         try {
-            VideoSimpleStringProperty video = tableView.getSelectionModel().getSelectedItem();
-            selectedId = tableView.getSelectionModel().getSelectedIndex();
-            res = video.getSrc().toString();
 
-            System.out.println("ID: " + selectedId + "    Video name " + video.getName().toString());
+            if (signalNext){
+                selectedId +=1;
+                if (selectedId >= videos.size())
+                    selectedId = videos.size()-1;
+                signalNext = false;
+            }
+            else if (signalPre){
+                selectedId -=1;
+                if (selectedId<0){
+                    selectedId = 0;
+                }
+                signalPre = false;
+            }else {
+                selectedId = tableView.getSelectionModel().getSelectedIndex();
+            }
+
+            res = videos.get(selectedId).getSrc();
+
+            System.out.println("ID: " + selectedId + "    Video name " + videos.get(selectedId).getName());
         } catch (Exception e) {
             selectedId = 0;
             res = videos.get(0).getSrc().toString();
@@ -572,4 +605,49 @@ public class PlayerOriginalController implements Initializable {
     }
 
 
+    public void actionBtNextVideo(MouseEvent mouseEvent) {
+        if (isPlaying) {
+            Stage stage = (Stage) mediaView.getScene().getWindow();
+            stage.setHeight(487);
+            stage.setWidth(801);
+            playOrStop();
+            timeBar.setValue(0);
+            if (mediaPlayer != null)
+                mediaPlayer.pause();
+            if (mediaPlaying != null)
+                mediaPlaying = null;
+            timeNow.setText("-:-");
+            timeSave.setText("-:-");
+            mediaPlayer.stop();
+            mediaPlayer.dispose();
+            isPlaying = false;
+            signalNext = true;
+            playOrStop();
+
+        }
+
+
+    }
+
+    public void actionBtPreVideo(MouseEvent mouseEvent) {
+        if (isPlaying) {
+            Stage stage = (Stage) mediaView.getScene().getWindow();
+            stage.setHeight(487);
+            stage.setWidth(801);
+            playOrStop();
+            timeBar.setValue(0);
+            if (mediaPlayer != null)
+                mediaPlayer.pause();
+            if (mediaPlaying != null)
+                mediaPlaying = null;
+            timeNow.setText("-:-");
+            timeSave.setText("-:-");
+            mediaPlayer.stop();
+            mediaPlayer.dispose();
+            isPlaying = false;
+            signalPre = true;
+            playOrStop();
+
+        }
+    }
 }

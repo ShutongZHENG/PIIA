@@ -162,12 +162,12 @@
                                 <Rectangle2D />
                             </viewport>
                         </ImageView>
-                        <ImageView id="bt_skipNext" fitHeight="23.0" fitWidth="20.0" layoutX="452.0" layoutY="35.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="10.0" AnchorPane.topAnchor="35.0">
+                        <ImageView id="bt_skipNext" fx:id="nextVideo" fitHeight="23.0" fitWidth="20.0" layoutX="452.0" layoutY="35.0" onMouseClicked="#actionBtNextVideo" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="10.0" AnchorPane.topAnchor="35.0">
                             <image>
                                 <Image url="@../../../icon/skipNext.png" />
                             </image>
                         </ImageView>
-                        <ImageView id="bt_skipPrevious" fitHeight="23.0" fitWidth="20.0" layoutX="323.0" layoutY="35.0" onMouseClicked="#actionSkipPre" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="10.0" AnchorPane.topAnchor="35.0">
+                        <ImageView id="bt_skipPrevious" fx:id="preVideo" fitHeight="23.0" fitWidth="20.0" layoutX="323.0" layoutY="35.0" onMouseClicked="#actionBtPreVideo" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="10.0" AnchorPane.topAnchor="35.0">
                             <image>
                                 <Image url="@../../../icon/skipPrevious.png" />
                             </image>
