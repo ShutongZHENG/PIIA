@@ -156,7 +156,14 @@ public class PlayerOriginalController implements Initializable {
             Stage stage = (Stage) mediaView.getScene().getWindow();
             stage.setHeight(487);
             stage.setWidth(801);
-            playOrStop();
+            Path imageFile = Paths.get("src/main/resources/icon/play.png");
+            try {
+                btPlay.setImage(new Image(imageFile.toUri().toURL().toExternalForm()));
+                i =  -1;
+                mediaPlayer.pause();
+            } catch (IOException e) {
+                System.out.println("Error: can't change image play");
+            }
         }
 
         timeBar.setValue(0);
@@ -184,7 +191,14 @@ public class PlayerOriginalController implements Initializable {
             Stage stage = (Stage) mediaView.getScene().getWindow();
             stage.setHeight(487);
             stage.setWidth(801);
-            playOrStop();
+            Path imageFile = Paths.get("src/main/resources/icon/play.png");
+            try {
+                btPlay.setImage(new Image(imageFile.toUri().toURL().toExternalForm()));
+                i =  -1;
+                mediaPlayer.pause();
+            } catch (IOException e) {
+                System.out.println("Error: can't change image play");
+            }
         }
 
         timeBar.setValue(0);
@@ -436,8 +450,7 @@ public class PlayerOriginalController implements Initializable {
                     public void run() {
                         if (isPlaying) {
                             Stage stage = (Stage) mediaView.getScene().getWindow();
-                            stage.setHeight(487);
-                            stage.setWidth(801);
+                            stage.setHeight(stage.getHeight()-100);
                             playOrStop();
                         }
                         timeBar.setValue(0);
@@ -514,9 +527,9 @@ public class PlayerOriginalController implements Initializable {
                 //  mediaView.setFitWidth(stage.getWidth());
 
                 System.out.println("W: " + stage.getWidth() + "   H:" + stage.getHeight());
-               // stage.setHeight(stage.getHeight() + 100);
-                stage.setWidth(mediaView.getFitWidth());
-                stage.setHeight(mediaView.getFitHeight()+130);
+                stage.setHeight(stage.getHeight() + 100);
+//                stage.setWidth(mediaView.getFitWidth());
+//                stage.setHeight(mediaView.getFitHeight()+130);
                 isPlaying = true;
                 tableView.setVisible(false);
                 tableView.setDisable(true);
@@ -608,8 +621,7 @@ public class PlayerOriginalController implements Initializable {
     public void actionBtNextVideo(MouseEvent mouseEvent) {
         if (isPlaying) {
             Stage stage = (Stage) mediaView.getScene().getWindow();
-            stage.setHeight(487);
-            stage.setWidth(801);
+            stage.setHeight(stage.getHeight()-100);
             playOrStop();
             timeBar.setValue(0);
             if (mediaPlayer != null)
@@ -632,8 +644,8 @@ public class PlayerOriginalController implements Initializable {
     public void actionBtPreVideo(MouseEvent mouseEvent) {
         if (isPlaying) {
             Stage stage = (Stage) mediaView.getScene().getWindow();
-            stage.setHeight(487);
-            stage.setWidth(801);
+            stage.setHeight(stage.getHeight()-100);
+            System.out.println("Stage H "+ stage.getHeight());
             playOrStop();
             timeBar.setValue(0);
             if (mediaPlayer != null)
